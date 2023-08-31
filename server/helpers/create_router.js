@@ -1,11 +1,10 @@
-const express = require('express');
-const ObjectID = require('mongodb').ObjectID;
+const express = require("express");
+const ObjectID = require("mongodb").ObjectID;
 
 const createRouter = function (collection) {
-
   const router = express.Router();
 
-  router.get('/', (req, res) => {
+  router.get("/", (req, res) => {
     collection
       .find()
       .toArray()
@@ -17,7 +16,7 @@ const createRouter = function (collection) {
       });
   });
 
-  router.get('/:id', (req, res) => {
+  router.get("/:id", (req, res) => {
     const id = req.params.id;
     collection
       .findOne({ _id: ObjectID(id) })
@@ -28,6 +27,34 @@ const createRouter = function (collection) {
         res.json({ status: 500, error: err });
       });
   });
+
+  router.post("/", (req, res) => {
+    const newData = req.body;
+
+    collection
+      .insertOne(newData)
+      .then((doc) => {
+        res.json(doc.ops[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500);
+        res.json({ status: 500, error: err });
+      });
+  });
+
+  // router.delete("/:id", (req, res) => {
+  //   collection
+  //     .deleteOne({ _id: ObjectId(req.params.id) })
+  //     .then((doc) => {
+  //       res.json(doc);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       res.status(500);
+  //       res.json({ status: 500, error: err });
+  //     });
+  // });
 
   return router;
 };
