@@ -43,18 +43,18 @@ const createRouter = function (collection) {
       });
   });
 
-  // router.delete("/:id", (req, res) => {
-  //   collection
-  //     .deleteOne({ _id: ObjectId(req.params.id) })
-  //     .then((doc) => {
-  //       res.json(doc);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       res.status(500);
-  //       res.json({ status: 500, error: err });
-  //     });
-  // });
+  router.delete("/:id", (req, res) => {
+    collection
+      .deleteOne({ _id: ObjectID(req.params.id) })
+      .then((doc) => {
+        res.json(doc);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500);
+        res.json({ status: 500, error: err });
+      });
+  });
 
   return router;
 };
